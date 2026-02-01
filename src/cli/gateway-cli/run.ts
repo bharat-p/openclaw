@@ -280,11 +280,11 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
               : undefined,
           tailscale:
             tailscaleMode || opts.tailscaleResetOnExit || tailscaleHttpsPortRaw !== undefined
-              ? {
-                  mode: tailscaleMode ?? undefined,
-                  resetOnExit: Boolean(opts.tailscaleResetOnExit),
-                  httpsPort: tailscaleHttpsPortRaw ?? undefined,
-                }
+              ? Object.assign(
+                  opts.tailscaleResetOnExit ? { resetOnExit: true } : {},
+                  tailscaleHttpsPortRaw !== undefined ? { httpsPort: tailscaleHttpsPortRaw } : {},
+                  tailscaleMode !== undefined ? { mode: tailscaleMode } : {},
+                )
               : undefined,
         }),
     });
